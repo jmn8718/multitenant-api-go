@@ -6,6 +6,8 @@ Rest API for a multitenant system using golang. It includes a Rest API using **G
 
 - *Database*: It uses **Postgres** for the database
 - *Documentation*: Swagger API documentation
+- *Auth*: It includes `jwt` authentication methods
+- *Api*: `jwt` authenticated api
 
 ## Requirements
 

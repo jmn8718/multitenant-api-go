@@ -63,7 +63,7 @@ func main() {
 		}
 	}()
 
-	db, dbErr := database.ConnectDatabase(logger)
+	db, dbErr := database.ConnectDatabase(logger, globals.Conf)
 
 	if dbErr != nil {
 		panic(dbErr)

@@ -4,14 +4,16 @@ import (
 	"errors"
 	"time"
 
+	"multitenant-api-go/internals/config"
 	"multitenant-api-go/internals/globals"
+	"multitenant-api-go/internals/models"
 
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func ConnectDatabase(logger *zap.SugaredLogger) (*gorm.DB, error) {
+func ConnectDatabase(logger *zap.SugaredLogger, config config.Config) (*gorm.DB, error) {
 	var database *gorm.DB
 	var err error
 	var connected = false
@@ -33,6 +35,11 @@ func ConnectDatabase(logger *zap.SugaredLogger) (*gorm.DB, error) {
 		err = errors.New("DB not connected")
 	} else {
 		logger.Debugln("Connected to db")
+		if config.EnableMigrations {
+			logger.Debugln("Running migrations...")
+			database.AutoMigrate(&models.User{})
+			logger.Debugln("Migrations completed")
+		}
 	}
 
 	return database, err

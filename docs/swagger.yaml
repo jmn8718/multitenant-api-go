@@ -1,4 +1,55 @@
 basePath: /
+definitions:
+  errors.HttpError:
+    properties:
+      code:
+        type: string
+      reason:
+        type: string
+    type: object
+  models.JwtResponse:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+    required:
+    - access_token
+    - expires_at
+    type: object
+  models.SignInUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.SignUpUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.UserMeResponse:
+    properties:
+      email:
+        type: string
+      emailVerified:
+        type: boolean
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
 externalDocs: {}
 host: localhost:5000
 info:
@@ -10,7 +61,95 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: Multitenant API
   version: "1.0"
-paths: {}
+paths:
+  /api/me:
+    get:
+      description: Get authenticated user information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserMeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Get Authenticate a user
+      tags:
+      - user
+  /auth/signin:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user using username and password, returns a JWT
+        token if successful
+      parameters:
+      - description: User login object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignInUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JwtResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      summary: Authenticate a user
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user with the given username and password
+      parameters:
+      - description: User registration object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JwtResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      summary: Register a new user
+      tags:
+      - auth
 securityDefinitions:
   ApiKeyAuth:
     in: header

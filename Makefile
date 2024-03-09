@@ -6,7 +6,7 @@ install:
 doc:
 	rm -rf docs
 	swag fmt
-	swag init --dir cmd/server/,api
+	swag init --dir cmd/server/,api,internals
 
 build:
 	go build -o ./bin/server ./cmd/server/main.go
