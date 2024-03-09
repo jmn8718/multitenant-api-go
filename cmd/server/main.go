@@ -2,6 +2,7 @@ package main
 
 import (
 	"multitenant-api-go/api"
+	"multitenant-api-go/docs"
 	"multitenant-api-go/internals/config"
 	"multitenant-api-go/internals/database"
 	"multitenant-api-go/internals/globals"
@@ -11,6 +12,8 @@ import (
 
 	"fmt"
 
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 )
 
@@ -70,6 +73,15 @@ func main() {
 	}
 
 	router := api.InitRouter(db, logger)
+
+	if globals.Conf.EnableSwagger {
+		var apiHost = globals.Conf.Host
+		if apiHost == "localhost" {
+			apiHost = fmt.Sprintf("%s:%s", apiHost, globals.Conf.Port)
+		}
+		docs.SwaggerInfo.Host = apiHost
+		router.GET("/swagger/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	}
 
 	if err := router.Run(fmt.Sprintf(":%s", globals.Conf.Port)); err != nil {
 		logger.Panicw("error: %s", err)

@@ -14,6 +14,7 @@ type Config struct {
 	JwtSecret        string
 	EnableMigrations bool
 	EnableSignup     bool
+	EnableSwagger    bool
 }
 
 func getEnv(key string, defaultValue string) string {
@@ -37,5 +38,7 @@ func InitializeConfiguration() Config {
 
 	conf.EnableMigrations = getEnv("ENABLE_MIGRATIONS", "false") == "true"
 	conf.EnableSignup = getEnv("ENABLE_SIGNUP", "true") == "true"
+	conf.EnableSwagger = getEnv("ENABLE_SWAGGER", "false") == "true"
+
 	return conf
 }

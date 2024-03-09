@@ -37,3 +37,10 @@ Rest API for a multitenant system using golang. It includes a Rest API using **G
 - [air](https://github.com/cosmtrek/air)
 - [swag](https://github.com/swaggo/swag)
 
+## Documentation
+
+Swagger API is available on [/swagger/docs/index.html] on your server. By default it is disabled, but can be enabled on your environment.
+
+Documentation is generated executing the command `make doc`.
+
+The swagger files is stored on `/docs` folder, so you can use it for any other purposes.
