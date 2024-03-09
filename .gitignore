@@ -1,0 +1,17 @@
+##
+## Specific to .dockerignore
+##
+
+.git/
+Dockerfile
+
+##
+## Common with .gitignore
+##
+
+# env files
+.env.*
+
+# Temporary files
+bin
+tmp

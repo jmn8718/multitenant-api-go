@@ -1,0 +1,23 @@
+basePath: /
+externalDocs: {}
+host: localhost:5000
+info:
+  contact:
+    name: API Support
+  description: Multitenant API server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Multitenant API
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
+  JwtAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
