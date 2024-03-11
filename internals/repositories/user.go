@@ -3,7 +3,7 @@ package repositories
 import (
 	"multitenant-api-go/internals/errors"
 	"multitenant-api-go/internals/models"
-	utils_auth "multitenant-api-go/internals/utils"
+	utils_auth "multitenant-api-go/internals/utils/auth"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"

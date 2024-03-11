@@ -17,6 +17,26 @@ definitions:
     - access_token
     - expires_at
     type: object
+  models.MyTenantsData:
+    properties:
+      id:
+        type: string
+      isSandbox:
+        type: boolean
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  models.MyTenantsDataResponse:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/models.MyTenantsData'
+        type: array
+    type: object
   models.SignInUser:
     properties:
       email:
@@ -36,6 +56,63 @@ definitions:
     required:
     - email
     - password
+    type: object
+  models.SuccessResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  models.TenantAddUserRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  models.TenantApiKeyResponse:
+    properties:
+      apiKey:
+        type: string
+    type: object
+  models.TenantCreateRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.TenantCreateResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  models.TenantUserDataResponse:
+    properties:
+      acceptedInvitation:
+        type: boolean
+      email:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      invitedAt:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  models.TenantUsersResponse:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/models.TenantUserDataResponse'
+        type: array
     type: object
   models.UserMeResponse:
     properties:
@@ -85,6 +162,192 @@ paths:
       summary: Get Authenticate a user
       tags:
       - user
+  /api/tenants:
+    get:
+      description: Get user's tenants
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MyTenantsDataResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Get tenants
+      tags:
+      - tenant
+    post:
+      description: Create tenant for the authenticated user
+      parameters:
+      - description: Tenant data
+        in: body
+        name: tenant
+        required: true
+        schema:
+          $ref: '#/definitions/models.TenantCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.TenantCreateResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Create tenant
+      tags:
+      - tenant
+  /api/tenants/:tenantId/keys:
+    get:
+      description: Get tenant's api key
+      parameters:
+      - description: tenant id
+        in: path
+        name: tenantId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TenantApiKeyResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Get api key
+      tags:
+      - tenant
+    patch:
+      description: Update (replace) tenant's api key
+      parameters:
+      - description: tenant id
+        in: path
+        name: tenantId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TenantApiKeyResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Update api key
+      tags:
+      - tenant
+  /api/tenants/:tenantId/users:
+    get:
+      description: Get tenant's users
+      parameters:
+      - description: tenant id
+        in: path
+        name: tenantId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TenantUsersResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Get tenant's users
+      tags:
+      - users
+      - tenant
+    post:
+      description: Add new user to tenant
+      parameters:
+      - description: tenant id
+        in: path
+        name: tenantId
+        required: true
+        type: string
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.TenantAddUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+        "500":
+          description: Internal error
+          schema:
+            $ref: '#/definitions/errors.HttpError'
+      security:
+      - JwtAuth: []
+      summary: Add user to tenant
+      tags:
+      - users
+      - tenant
   /auth/signin:
     post:
       consumes:

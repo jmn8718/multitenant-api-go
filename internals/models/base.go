@@ -17,3 +17,7 @@ func (base *BaseModel) BeforeCreate(tx *gorm.DB) error {
 	base.ID = cuid.New()
 	return nil
 }
+
+type SuccessResponse struct {
+	Success bool `json:"success"`
+}

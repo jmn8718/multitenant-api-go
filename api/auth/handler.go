@@ -5,7 +5,7 @@ import (
 	"multitenant-api-go/internals/globals"
 	"multitenant-api-go/internals/models"
 	"multitenant-api-go/internals/repositories"
-	utils_auth "multitenant-api-go/internals/utils"
+	utils_auth "multitenant-api-go/internals/utils/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

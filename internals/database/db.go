@@ -38,6 +38,8 @@ func ConnectDatabase(logger *zap.SugaredLogger, config config.Config) (*gorm.DB,
 		if config.EnableMigrations {
 			logger.Debugln("Running migrations...")
 			database.AutoMigrate(&models.User{})
+			database.AutoMigrate(&models.Tenant{})
+			database.AutoMigrate(&models.UserTenants{})
 			logger.Debugln("Migrations completed")
 		}
 	}

@@ -2,6 +2,7 @@ package api
 
 import (
 	api_auth "multitenant-api-go/api/auth"
+	api_tenants "multitenant-api-go/api/tenants"
 	api_user "multitenant-api-go/api/user"
 	"multitenant-api-go/internals/constants"
 	"multitenant-api-go/internals/globals"
@@ -42,6 +43,7 @@ func InitRouter(db *gorm.DB, logger *zap.SugaredLogger) *gin.Engine {
 	api := router.Group("/api")
 	api.Use(jwtMiddleware)
 	api_user.RegisterRoutes(api, db)
+	api_tenants.RegisterRoutes(api, db)
 
 	return router
 }

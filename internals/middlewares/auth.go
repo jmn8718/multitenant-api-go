@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"multitenant-api-go/internals/constants"
-	utils_auth "multitenant-api-go/internals/utils"
+	utils_auth "multitenant-api-go/internals/utils/auth"
 	"net/http"
 	"strings"
 

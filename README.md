@@ -7,7 +7,7 @@ Rest API for a multitenant system using golang. It includes a Rest API using **G
 - *Database*: It uses **Postgres** for the database
 - *Documentation*: Swagger API documentation
 - *Auth*: It includes `jwt` authentication methods
-- *Api*: `jwt` authenticated api
+- *Management Api*: `jwt` authenticated api (`/users` and `/tenants`)
 
 ## Requirements
 
@@ -44,3 +44,7 @@ Swagger API is available on [/swagger/docs/index.html] on your server. By defaul
 Documentation is generated executing the command `make doc`.
 
 The swagger files is stored on `/docs` folder, so you can use it for any other purposes.
+
+## DB Schema
+
+![schema](./db.svg)
