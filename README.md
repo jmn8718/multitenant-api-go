@@ -30,12 +30,17 @@ Rest API for a multitenant system using golang. It includes a Rest API using **G
   - `make dup` to start the *api* container
   - `make dlogs` to visualize the *api* container logs
 
+## Testing
+
+- Run `make check-coverage` to run the tests and generate the coverage report
+
 ## Packages
 
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - [GORM (Golang ORM)](https://gorm.io/)
 - [air](https://github.com/cosmtrek/air)
 - [swag](https://github.com/swaggo/swag)
+- [go-test-coverage](https://github.com/vladopajic/go-test-coverage)
 
 ## Documentation
 

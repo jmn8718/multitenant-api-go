@@ -1,3 +1,5 @@
+GOBIN ?= $$(go env GOPATH)/bin
+
 install:
 	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
 	go install github.com/swaggo/swag/cmd/swag@latest
@@ -28,3 +30,15 @@ dup:
 
 dlogs:
 	docker-compose logs --tail=50 -f api
+
+.PHONY: install-go-test-coverage
+install-go-test-coverage:
+	go install github.com/vladopajic/go-test-coverage/v2@latest
+
+.PHONY: check-coverage
+check-coverage: install-go-test-coverage
+	go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+	${GOBIN}/go-test-coverage --config=./.testcoverage.yml
+
+show-coverage:
+	go tool cover -html=cover.out
